@@ -6,7 +6,7 @@ import subprocess
 from datetime import datetime
 
 # Configuration
-REPO_URL = "https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git" # Replace with your GitHub URL
+REPO_URL = "https://github.com/skkapilhunters/SecureRoute.git" # Replace with your GitHub URL
 BACKUP_DIR = "./backups"
 VERSION_FILE = "./version.json"
 
