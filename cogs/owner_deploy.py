@@ -54,11 +54,20 @@ class MultiBotDeploy(commands.Cog):
         last_version = config.get("last_version", "v1.0.0")
         last_deploy_time = config.get("last_deploy_time")
 
-        # 1. Fetch backup channel
+        # Convert channel_id to int in case it came from DB as text
+        channel_id = int(config["channel_id"])
+
+        # Try getting from cache first; if not found, fetch directly from Discord API
         backup_channel = self.bot.get_channel(channel_id)
         if not backup_channel:
+            try:
+                backup_channel = await self.bot.fetch_channel(channel_id)
+            except Exception as e:
+                print(f"Failed to fetch channel: {e}")
+
+        if not backup_channel:
             if trigger_ctx:
-                await trigger_ctx.send(f"❌ Target backup channel `{channel_id}` not found.")
+                await trigger_ctx.send(f"❌ Target backup channel `{channel_id}` not found or bot lacks access permissions.")
             return
 
         # 2. Download repo and pack backup zip
